@@ -1,3 +1,5 @@
+// run the game
+console.log(runGame());
 
 // Declare a function to get computer selection
 function getComputerSelection() {
@@ -34,6 +36,7 @@ function playRound() {
     let computerSelection = getComputerSelection();
     // test getComputerSelection() returns expected outcome
     console.log('COMPUTER: ' + computerSelection);
+    console.log('PLAYER: ' + userInput);
 
     // Check user input against computer selection to determine winner of round
     switch (userInput){
@@ -82,6 +85,51 @@ function playRound() {
         }
 }
 
+// Declare a function to run the game
+function runGame() {
+    // Declare a variable to track who is winning and set its initial value to 0
+    let score = 0;
 
-// test playRound() returns expected outcome
-console.log(playRound());
+    // Declare a variable to set number of rounds in game
+    const rounds = 5;
+
+    // For round in game do the following:
+    for(let i = 1; i <= rounds; i++) {
+        
+        // log the number of the round
+        console.log('ROUND: ' + i);
+        // Call function to play round and store the return value in a variable
+        let roundWinner = playRound();
+        
+        
+        switch (roundWinner) {
+            // When the player wins increment score by 1
+            case 'player':
+                score++;
+                break;
+            // When the computer wins decrement score by 1
+            case 'computer':
+                score--;
+                break;
+            // When there is a tie do nothing
+            case 'tie':
+                break;
+
+            default:
+                console.log('error');
+        }
+    }
+
+    // If score variable is greater than 0 player wins 
+    if (score > 0) {
+        return 'CONGRATULATIONS! YOU WON!';
+    }
+    // Else if score is less than 0 the computer wins
+    else if (score < 0) {
+        return 'SORRY YOU LOST!';
+    }
+    // Else the game is a tie 
+    else {
+        return 'IT\'S A TIE!'
+    }
+}
