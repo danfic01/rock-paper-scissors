@@ -1,5 +1,19 @@
-// run the game
-console.log(runGame());
+//Check the button the user clicks to determine user selection
+document.addEventListener('click', (event) => {
+    let target = event.target;
+
+    switch(target.id) {
+        case 'rock':
+            playRound('rock');
+            break;
+        case 'paper':
+            playRound('paper');
+            break;
+        case 'scissors':
+            playRound('scissors');
+            break;
+    }
+});
 
 // Declare a function to get computer selection
 function getComputerSelection() {
@@ -23,14 +37,9 @@ function getComputerSelection() {
 }
 
 // Declare a function to play a round of RPS
-function playRound() {
+function playRound(userSelection) {
     // Get user input and store it in a variable
-    let userInput = prompt('CHOOSE ONE: ROCK | PAPER | SCISSORS ').toLowerCase(); // store user input as lower case
-
-    // While user input is not rock, not paper and not scissors (case insensitive) get user input and reassign variable
-    while (userInput !== 'rock' && userInput !== 'paper' && userInput !== 'scissors') {
-        userInput = prompt('PLEASE ENTER ONLY ROCK PAPER OR SCISSORS').toLowerCase();
-    }
+    let userInput = userSelection;//prompt('CHOOSE ONE: ROCK | PAPER | SCISSORS ').toLowerCase(); // store user input as lower case
 
     // Call function to get computer selection and store the return value in a variable
     let computerSelection = getComputerSelection();
