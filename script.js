@@ -1,144 +1,90 @@
-//Check the button the user clicks to determine user selection
-document.addEventListener('click', (event) => {
-    let target = event.target;
+const display = document.querySelector('.container'); //declare a variable to store output to be displayed to user
 
-    switch(target.id) {
-        case 'rock':
-            playRound('rock');
-            break;
-        case 'paper':
-            playRound('paper');
-            break;
-        case 'scissors':
-            playRound('scissors');
-            break;
-    }
+// declare separate variables to store player and computer scores to update and track them independently
+let playerScore = 0;
+let compScore = 0;
+
+// add a listener to check when the user clicks on the page
+document.addEventListener('click', (event) => {
+  
+    let target = event.target; // declare a variable to store the element clicked by the user
+    playRound(target.id); // pass the id of the clicked element as an argument to set player choice
+
 });
 
-// Declare a function to get computer selection
-function getComputerSelection() {
+// declare a function to reset varaibles to origin state
+function resetGame() {
+    playerScore = 0;
+    compScore = 0;
+}
+
+// declare a function to get the computer selection
+function getCompSelection() {
+    let compSelection = '';
+    const randInt = Math.floor(Math.random()*3); //declare a variable to store a random integer between 0-2
     
-    // Generate a random integer between 0-2 and store the value in a variable
-    const randInt = Math.floor(Math.random()*3);
-    
-    // Determine computer selection
-    if (randInt === 0) {
-        //if 0 computer selection is rock
-        return "rock";
-    }
-    else if (randInt === 1) {
-        // else if 1 computer selection is paper
-        return "paper";
-    }
-    else {
-        // else (2) computer selection is scissors
-        return "scissors";
+    // use the random integer to determine the computer's choice
+    switch (randInt) {
+        case 0:
+            return compSelection = 'rock';
+            break;
+        case 1:
+            return compSelection = 'paper';
+            break;
+        case 2:
+            return compSelection = 'scissors';
+            break;
     }
 }
 
-// Declare a function to play a round of RPS
-function playRound(userSelection) {
-    // Get user input and store it in a variable
-    let userInput = userSelection;//prompt('CHOOSE ONE: ROCK | PAPER | SCISSORS ').toLowerCase(); // store user input as lower case
 
-    // Call function to get computer selection and store the return value in a variable
-    let computerSelection = getComputerSelection();
-    // test getComputerSelection() returns expected outcome
-    console.log('COMPUTER: ' + computerSelection);
-    console.log('PLAYER: ' + userInput);
-
-    // Check user input against computer selection to determine winner of round
-    switch (userInput){
-        
-        // define outcomes when user chooses rock
+// declare a function to play a round of rock paper scissors 
+function playRound (userInput) {
+    let playerSelection = userInput;
+    let compSelection = getCompSelection();
+    
+    // compare player and computer selection to determine the winner of the round 
+    switch(playerSelection) {
+      
         case 'rock':
-            if(computerSelection === 'scissors') {
-                return 'player';
+            if (compSelection === 'scissors') {
+                playerScore++;
             }
-            else if (computerSelection === 'paper'){
-                return 'computer';
-            }
-            else {
-                return 'tie';
+            else if (compSelection === 'paper') {
+                compScore++;
             }
             break;
-        
-        // define outcomes when user chooses paper
+      
         case 'paper':
-            if(computerSelection === 'rock') {
-                return 'player';
+            if (compSelection === 'rock') {
+                playerScore++;
             }
-            else if (computerSelection === 'scissors'){
-                return 'computer';
-            }
-            else {
-                return 'tie';
+            else if (compSelection === 'scissors') {
+                compScore++;
             }
             break;
-        
-        // define outcomes when user chooses scissors
+      
         case 'scissors':
-            if(computerSelection === 'paper') {
-                return 'player';
+            if (compSelection === 'paper') {
+                playerScore++;
             }
-            else if (computerSelection === 'rock'){
-                return 'computer';
-            }
-            else {
-                return 'tie';
+            else if (compSelection === 'rock') {
+                compScore++;
             }
             break;
-        
-        default:
-            console.log('algorithmic error');
-        }
-}
-
-// Declare a function to run the game
-function runGame() {
-    // Declare a variable to track who is winning and set its initial value to 0
-    let score = 0;
-
-    // Declare a variable to set number of rounds in game
-    const rounds = 5;
-
-    // For round in game do the following:
-    for(let i = 1; i <= rounds; i++) {
-        
-        // log the number of the round
-        console.log('ROUND: ' + i);
-        // Call function to play round and store the return value in a variable
-        let roundWinner = playRound();
-        
-        
-        switch (roundWinner) {
-            // When the player wins increment score by 1
-            case 'player':
-                score++;
-                break;
-            // When the computer wins decrement score by 1
-            case 'computer':
-                score--;
-                break;
-            // When there is a tie do nothing
-            case 'tie':
-                break;
-
-            default:
-                console.log('error');
-        }
     }
-
-    // If score variable is greater than 0 player wins 
-    if (score > 0) {
-        return 'CONGRATULATIONS! YOU WON!';
+  
+    // check for a winner and display the output to the user
+    if (playerScore >= 5) {
+        display.textContent = `PLAYER: ${playerScore} | ${playerSelection.toUpperCase()}  <<< WINNER <<< ${compSelection.toUpperCase()} | ${compScore} :COMPUTER`;
+        resetGame();
     }
-    // Else if score is less than 0 the computer wins
-    else if (score < 0) {
-        return 'SORRY YOU LOST!';
+    else if (compScore >= 5) {
+        display.textContent = `PLAYER: ${playerScore} | ${playerSelection.toUpperCase()} >>> WINNER >>> ${compSelection.toUpperCase()} | ${compScore} :COMPUTER`;
+        resetGame();
     }
-    // Else the game is a tie 
     else {
-        return 'IT\'S A TIE!'
+        display.textContent = `PLAYER: ${playerScore} | ${playerSelection.toUpperCase()}  |  ${compSelection.toUpperCase()} | ${compScore} :COMPUTER`
     }
+  
 }
